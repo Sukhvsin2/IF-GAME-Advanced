@@ -4,6 +4,10 @@
 	#include "Item.h"
 #endif
 
+#ifndef PLAYER_H
+#define PLAYER_H
+#include "MapV2.h"
+
 class Player{
   public:
   	uLList<Item*> items;
@@ -136,8 +140,8 @@ class Player{
 				cout<<"No item by that name in your inventory."<<endl;
 			}
 		}
-	}
-
+	};
+	
 	virtual int isGameOver() = 0;
 	virtual void resetPlayerStats() = 0;
 	virtual void reportStats() = 0;
@@ -150,3 +154,5 @@ class Player{
 		areaNode* lastLocation;
 
 };
+
+#endif

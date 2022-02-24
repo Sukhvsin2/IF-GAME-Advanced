@@ -1,3 +1,8 @@
+#ifndef MAPV2_H
+#define MAPV2_H
+
+
+
 #include<iostream>
 #include "Map.h"
 #include "Player.h"
@@ -14,6 +19,7 @@ MapV2(){
 			nextToken = parser.getNext();
 
 			if(nextToken == "<game>"){
+				cout << "ATE GAME TOKEN\n";
 				parser.eatToken();
 				nextToken = parser.getNext();
 				while(nextToken != "</game>"){  //consider what happens when run out of tokens && not error state
@@ -71,6 +77,7 @@ MapV2(){
 			InsertItems();
 
 		//constructor
+		cout << "FINISHED PARSING\n";
 }
 
 void makeItem(){
@@ -158,7 +165,5 @@ friend ostream& operator<<(ostream& os, MapV2& map){
 			return os;
 		}
 
-
-
-
 };
+#endif //MAPV2_H

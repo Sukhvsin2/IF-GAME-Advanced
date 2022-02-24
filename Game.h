@@ -1,4 +1,6 @@
 #include "MapV2.h"
+
+
 #include "Player.h"
 
 #ifndef ullItem
@@ -7,14 +9,17 @@
 	#include "Item.h"
 #endif
 
+#ifndef GAME_H
+#define GAME_H
+
 class Game{
 	private:
-		Player player1;
+		Player *player1;
 		MapV2 map;
 			
   	public:
 		Game(){
-			player1.setCurrent(map.getStart());
+			player1->setCurrent(map.getStart());
 		}	
     
   		void play(){
@@ -22,13 +27,13 @@ class Game{
 			//cin.ignore();
       			while(true){				
 				//check game status
-				if(player1.isGameOver() != 0){
-					player1.getCurrent()->info.displayArea();
+				if(player1->isGameOver() != 0){
+					player1->getCurrent()->info.displayArea();
 					return;
 				}
       				//display area data
-				if(player1.playerMoved()){
-	    				player1.getCurrent()->info.displayArea();
+				if(player1->playerMoved()){
+	    				player1->getCurrent()->info.displayArea();
 				}
 				else{
 					if(userInput != "reset"){
@@ -42,16 +47,16 @@ class Game{
 	  		
 	  			//update area
 	  			if(userInput == "u"){
-       				player1.setCurrent(player1.getCurrent()->u);
+       				player1->setCurrent(player1->getCurrent()->u);
 		 		}
 				else if(userInput == "d"){
-					player1.setCurrent(player1.getCurrent()->d);
+					player1->setCurrent(player1->getCurrent()->d);
 				}
 				else if(userInput == "l"){
-					player1.setCurrent(player1.getCurrent()->l);
+					player1->setCurrent(player1->getCurrent()->l);
 				}
 				else if(userInput == "r"){
-	  				player1.setCurrent(player1.getCurrent()->r);
+	  				player1->setCurrent(player1->getCurrent()->r);
 				}
 				else if(userInput == "iseedeadpeople"){ //issdeadpeople cheat code to reveal map
 					//map.print();
@@ -65,19 +70,22 @@ class Game{
 					return;
 				}
 				else if(userInput == "search"){
-					player1.getCurrent()->info.search();
+					player1->getCurrent()->info.search();
 				}
 				else if(userInput == "inventory"){
-					player1.inventory();
+					player1->inventory();
 				}
 				else if(userInput == "take"){
-					player1.take();
+					player1->take();
 				}
 				else if(userInput == "leave"){
-					player1.leave();
+					player1->leave();
 				}
 				else if(userInput == "examine"){
-					player1.examine();
+					player1->examine();
+				}
+				else if(userInput == "stats"){
+					//player1->reportStats();
 				}
 				else if(userInput == "help"){
 					cout<<"You may type: "<<endl;
@@ -99,10 +107,12 @@ class Game{
     		}//end play()
 
 		void resetGame(){
-			player1.setCurrent(map.getStart());
+			player1->setCurrent(map.getStart());
 			//remove item from player list
-			player1.items.destroyList();
+			player1->items.destroyList();
 			//remove item from each area in turn
 			map.resetItems();
 		}
 };
+
+#endif
