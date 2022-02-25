@@ -5,7 +5,7 @@ using namespace std;
 class Basic : public Player{
     public:
         int isGameOver(){
-            
+            return 0;
         };
         void resetPlayerStats(){
             // No Use
