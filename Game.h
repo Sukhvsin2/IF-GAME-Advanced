@@ -86,7 +86,7 @@ class Game{
 					player1.examine();
 				}
 				else if(userInput == "stats"){
-					//player1->reportStats();
+					player1.reportStats();
 				}
 				else if(userInput == "help"){
 					cout<<"You may type: "<<endl;
