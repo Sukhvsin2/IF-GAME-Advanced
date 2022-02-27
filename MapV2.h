@@ -5,13 +5,15 @@
 
 #include<iostream>
 #include "Map.h"
-#include "Player.h"
+#include "BasicPlayer.h"
+#include "HPSPPlayer.h"
 using namespace std;
 
 class MapV2 : public Map{
     private:
 vector<Item*> itemVec;
     public:
+	Player *tempPlayer;
 MapV2(){
 			ifderr = false;
 			parser.tokenIt();
@@ -27,6 +29,7 @@ MapV2(){
 						parser.eatToken();
 						nextToken = parser.getNext();
 						createPlayer();
+						//cout<<"Return Back";
 					}
 					else if(nextToken == "<area>"){
 						parser.eatToken();
@@ -80,14 +83,19 @@ MapV2(){
 			//link up areas
 			linkLinks();
 			InsertItems();
-
 		//constructor
 }
 
 void createPlayer(){
 	cout<<"Creating "<<nextToken<<" Player ... READY!"<<endl;
-	parser.eatToken();
-	nextToken = parser.getNext();
+		if(nextToken == "basic") tempPlayer = new Basic();
+		else tempPlayer = new HPSPPlayer();
+		parser.eatToken();
+		nextToken = parser.getNext();
+}
+
+Player* checkPlayer(){
+	return tempPlayer;
 }
 
 void makeItem(){

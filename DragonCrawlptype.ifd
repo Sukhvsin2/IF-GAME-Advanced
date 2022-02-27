@@ -1,6 +1,6 @@
 <game>
 	%the new ptype tag that lets us declare what kind of player we are using
-	<ptype>basic</ptype>
+	<ptype>hsps</ptype>
 	
 	<links>
 		<linkset>2,6,3,4</linkset>

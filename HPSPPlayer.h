@@ -11,15 +11,30 @@ class HPSPPlayer : public Player{
         SP = 100;
     }   
     int isGameOver(){
-        //if(currentLocation->info.getGoal() == 1)
+        if(HP <= 0 || SP <= 0){
+            return 1;
+        }
+        else if (currentLocation->info.getID() == 1){
+            return 2;
+        }
+        else if(currentLocation->info.getGoal() == 1){
+            return 1;
+        }
+        else if(currentLocation->info.getID() == 0 && currentLocation->info.getGoal() == 0){
+            return 0;
+        }
+        else{
+            return 0;
+        } 
     }
     void resetPlayerStats(){
         HP = 100;
         SP = 100;
     }
     void reportStats(){
-        cout << "SP: " << SP << endl;
-        cout << "HP: " << HP << endl;
+        cout<<"Player Stats: "<<endl;
+        cout << "\tHit Points: " << HP << endl;
+        cout << "\tSanity Points: " << SP << endl;
     }
 	
 	virtual void consume(Map* mapptr){
