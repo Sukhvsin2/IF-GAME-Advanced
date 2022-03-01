@@ -1,3 +1,7 @@
+#ifndef ITEM_CLASS
+#define ITEM_CLASS
+/* code */
+
 #ifndef h_structs
 #define h_structs
     #include "structs.h"
@@ -95,3 +99,5 @@ ostream& operator<<(ostream& osObject, Item& item)
 	osObject<<"StrtRm: "<<item.getSR()<<endl;
 	return osObject;
 }
+
+#endif //ITEM_CLASS

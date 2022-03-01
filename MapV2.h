@@ -7,6 +7,10 @@
 #include "Map.h"
 #include "BasicPlayer.h"
 #include "HPSPPlayer.h"
+#include "UseItem.h"
+#include "ConsumeItem.h"
+
+
 using namespace std;
 
 class MapV2 : public Map{
@@ -53,6 +57,8 @@ MapV2(){
 					}
 					parser.eatToken();
 					nextToken = parser.getNext();
+					cout<<"Token:" <<nextToken<<endl;
+
 				}// while !</game>
 
 				if(ifderr){
@@ -94,59 +100,193 @@ void createPlayer(){
 		nextToken = parser.getNext();
 }
 
-Player* checkPlayer(){
-	return tempPlayer;
-}
-
 void makeItem(){
 			string name, description;
             int room;
 			string xstr;
+			int beginRm;
+			char direction;
+			int destRm;
+			Item* tempItemPtr;
+			cout<<"Make item: "<<nextToken<<endl;
+			if(nextToken == "<use>"){
+				tempItemPtr = new UseItem();
+				parser.eatToken();
+				nextToken = parser.getNext();
+				while(nextToken != "</item>"){
+					if(nextToken == "<actmess>"){
+						// actmess code
+						parser.eatToken();
+						nextToken = parser.getNext();
+					}
+					else if(nextToken == "<actar>"){
 
-			Item* tempItemPtr = new Item;
+						parser.eatToken();
+						nextToken = parser.getNext();
+					}
+					else if(nextToken == "<rule>"){
+						parser.eatToken();
+						nextToken = parser.getNext();
 
-			while(nextToken != "</item>"){
-				if(nextToken == "<desc>"){
+						Rule *tempRules = new Rule();
+
+						istringstream ss(nextToken);
+        				getline(ss, xstr, ',');
+						tempRules->beginRm = atoi(xstr.c_str());
+						getline(ss, xstr, ',');
+						tempRules->direction = (xstr.c_str()[0]);
+						getline(ss, xstr, ',');
+						tempRules->destRm = atoi(xstr.c_str());
+
+						tempItemPtr->addRule(tempRules);
+
+					}
+					else if(nextToken == "<desc>"){
+						parser.eatToken();
+						nextToken = parser.getNext();
+						
+						tempItemPtr->setDesc(nextToken);
+					}
+					else if(nextToken == "<name>"){
+						parser.eatToken();
+						nextToken = parser.getNext();
+						tempItemPtr->setName(nextToken);
+					}
+					else if(nextToken == "<star>"){
+						parser.eatToken();
+						nextToken = parser.getNext();
+						tempItemPtr->setSR(stoi(nextToken));
+					}
+					else if(nextToken == "</desc>" || nextToken == "</actmess>" || nextToken == "</actar>" || nextToken == "</star>" || nextToken == "</name>" || nextToken == "</use>" || nextToken == "</rule>"){
+					//do nothing
+					}
+					else{
+						cout<<"Parse Error Location 2"<<endl;
+						ifderr = true;
+						break;
+					}
+
 					parser.eatToken();
 					nextToken = parser.getNext();
-					
-					tempItemPtr->setDesc(nextToken);
-				}
-				else if(nextToken == "<name>"){
-					parser.eatToken();
-					nextToken = parser.getNext();
-					tempItemPtr->setName(nextToken);
-				}
-				else if(nextToken == "<star>"){
-					parser.eatToken();
-					nextToken = parser.getNext();
-					tempItemPtr->setSR(stoi(nextToken));
-				}
-				else if(nextToken == "</desc>" || nextToken == "</star>" || nextToken == "</name>"){
-				  //do nothing
-				}
-				else{
-					cout<<"Parse Error Location 2"<<endl;
-					ifderr = true;
-					break;
-				}
+				}//while !</item>
+			}else if(nextToken == "<basic>"){
+				tempItemPtr = new Item();
+				parser.eatToken();
+				nextToken = parser.getNext();
+				basicHelper(tempItemPtr);
+			}else if(nextToken == "<consume>"){
+				tempItemPtr = new ConsumeItem();
 
 				parser.eatToken();
 				nextToken = parser.getNext();
-			}//while !</item>
+				consumeHelper(tempItemPtr);
+			}else{
+				cout<<"Invalid Item Token Type!"<<endl;
+			}
 
 			//add item to vector
 			itemVec.push_back(tempItemPtr);
 
 }
 
-void InsertItems(){
+void consumeHelper(Item *tempItemPtr){
+	while(nextToken != "</consume>"){
+		if(nextToken == "<actmess>"){
+			// actmess code
+			parser.eatToken();
+			nextToken = parser.getNext();
+		}
+		else if(nextToken == "<actar>"){
 
-	for(int i = 0; i < itemVec.size(); i++){
-		areasVec[itemVec[i]->getSR() - 1]->info.items.insertLast(itemVec[i]); 
+			parser.eatToken();
+			nextToken = parser.getNext();
+		}
+		else if(nextToken == "<desc>"){
+			parser.eatToken();
+			nextToken = parser.getNext();
+			
+			tempItemPtr->setDesc(nextToken);
+		}
+		else if(nextToken == "<name>"){
+			parser.eatToken();
+			nextToken = parser.getNext();
+			tempItemPtr->setName(nextToken);
+		}
+		else if(nextToken == "<star>"){
+			parser.eatToken();
+			nextToken = parser.getNext();
+			tempItemPtr->setSR(stoi(nextToken));
+		}
+		else if(nextToken == "<effect>"){
+			string xstr;
+
+			parser.eatToken();
+			nextToken = parser.getNext();
+
+			nextToken = parser.getNext();
+
+			Effect *tempEffect = new Effect();
+			istringstream ss(nextToken);
+			getline(ss, xstr, ',');
+			tempEffect->effectID = atoi(xstr.c_str());
+			getline(ss, xstr, ',');
+			tempEffect->effectAmt = atoi(xstr.c_str());
+			cout<<"Consume function"<<endl;
+			
+			tempItemPtr->addEffect(tempEffect);
+		}
+		else if(nextToken == "</desc>" || nextToken == "</actmess>" || nextToken == "</actar>" || nextToken == "</star>" || nextToken == "</name>" || nextToken == "</effect>"){
+		//do nothing
+		}
+		else{
+			cout<<"Parse Error Location 2"<<endl;
+			ifderr = true;
+			break;
+		}
+
+		parser.eatToken();
+		nextToken = parser.getNext();
 	}
-
 }
+
+void basicHelper(Item *tempItemPtr){
+	while(nextToken != "</basic>"){
+		if(nextToken == "<desc>"){
+			parser.eatToken();
+			nextToken = parser.getNext();
+			
+			tempItemPtr->setDesc(nextToken);
+		}
+		else if(nextToken == "<name>"){
+			parser.eatToken();
+			nextToken = parser.getNext();
+			tempItemPtr->setName(nextToken);
+		}
+		else if(nextToken == "<star>"){
+			parser.eatToken();
+			nextToken = parser.getNext();
+			tempItemPtr->setSR(stoi(nextToken));
+		}
+		else if(nextToken == "</desc>" || nextToken == "</star>" || nextToken == "</name>"){
+		//do nothing
+		}
+		else{
+			cout<<"Parse Error Location 2"<<endl;
+			ifderr = true;
+			break;
+		}
+
+		parser.eatToken();
+		nextToken = parser.getNext();
+	}//while !</item>
+}
+
+void InsertItems(){
+	for(int i = 0; i < itemVec.size(); i++){
+		areasVec[itemVec[i]->getSR() - 1]->info.items.insertLast(itemVec[i]);
+	}
+}
+
 
 void resetItems(){
 	
