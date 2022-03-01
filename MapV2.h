@@ -19,11 +19,16 @@ MapV2(){
 			nextToken = parser.getNext();
 
 			if(nextToken == "<game>"){
-				cout << "ATE GAME TOKEN\n";
 				parser.eatToken();
 				nextToken = parser.getNext();
 				while(nextToken != "</game>"){  //consider what happens when run out of tokens && not error state
-					if(nextToken == "<area>"){
+					// ptype
+					if(nextToken == "<ptype>"){
+						parser.eatToken();
+						nextToken = parser.getNext();
+						createPlayer();
+					}
+					else if(nextToken == "<area>"){
 						parser.eatToken();
 						nextToken = parser.getNext();
 						makeArea();
@@ -77,7 +82,12 @@ MapV2(){
 			InsertItems();
 
 		//constructor
-		cout << "FINISHED PARSING\n";
+}
+
+void createPlayer(){
+	cout<<"Creating "<<nextToken<<" Player ... READY!"<<endl;
+	parser.eatToken();
+	nextToken = parser.getNext();
 }
 
 void makeItem(){
