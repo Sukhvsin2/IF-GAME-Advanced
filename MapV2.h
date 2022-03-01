@@ -55,9 +55,10 @@ MapV2(){
 						ifderr = true;
 						break;
 					}
+					// cout<<"Token1:" <<nextToken<<endl;
 					parser.eatToken();
 					nextToken = parser.getNext();
-					cout<<"Token:" <<nextToken<<endl;
+					// cout<<"Token2:" <<nextToken<<endl;
 
 				}// while !</game>
 
@@ -100,6 +101,10 @@ void createPlayer(){
 		nextToken = parser.getNext();
 }
 
+Player* checkPlayer(){
+	return tempPlayer;
+}
+
 void makeItem(){
 			string name, description;
             int room;
@@ -108,21 +113,25 @@ void makeItem(){
 			char direction;
 			int destRm;
 			Item* tempItemPtr;
-			cout<<"Make item: "<<nextToken<<endl;
+			// cout<<"Make item: "<<nextToken<<endl;
 			if(nextToken == "<use>"){
 				tempItemPtr = new UseItem();
 				parser.eatToken();
 				nextToken = parser.getNext();
-				while(nextToken != "</item>"){
+				while(nextToken != "</use>"){
 					if(nextToken == "<actmess>"){
 						// actmess code
 						parser.eatToken();
 						nextToken = parser.getNext();
+						tempItemPtr->setActiveMessage(nextToken);
 					}
 					else if(nextToken == "<actar>"){
 
 						parser.eatToken();
 						nextToken = parser.getNext();
+						istringstream ss(nextToken);
+        				getline(ss, xstr);
+						tempItemPtr->setActiveArea(atoi(xstr.c_str()));
 					}
 					else if(nextToken == "<rule>"){
 						parser.eatToken();
@@ -186,6 +195,8 @@ void makeItem(){
 
 			//add item to vector
 			itemVec.push_back(tempItemPtr);
+			parser.eatToken();
+			nextToken = parser.getNext();
 
 }
 
@@ -231,7 +242,6 @@ void consumeHelper(Item *tempItemPtr){
 			tempEffect->effectID = atoi(xstr.c_str());
 			getline(ss, xstr, ',');
 			tempEffect->effectAmt = atoi(xstr.c_str());
-			cout<<"Consume function"<<endl;
 			
 			tempItemPtr->addEffect(tempEffect);
 		}
@@ -247,6 +257,7 @@ void consumeHelper(Item *tempItemPtr){
 		parser.eatToken();
 		nextToken = parser.getNext();
 	}
+	itemVec.push_back(tempItemPtr);
 }
 
 void basicHelper(Item *tempItemPtr){
@@ -271,7 +282,7 @@ void basicHelper(Item *tempItemPtr){
 		//do nothing
 		}
 		else{
-			cout<<"Parse Error Location 2"<<endl;
+			cout<<"Parse Error Location 3"<<endl;
 			ifderr = true;
 			break;
 		}
@@ -279,6 +290,7 @@ void basicHelper(Item *tempItemPtr){
 		parser.eatToken();
 		nextToken = parser.getNext();
 	}//while !</item>
+	itemVec.push_back(tempItemPtr);
 }
 
 void InsertItems(){
