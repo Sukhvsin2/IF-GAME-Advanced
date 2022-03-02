@@ -12,14 +12,13 @@
 
 
 <game>
-	<ptype>hpsp</ptype>	
+	<ptype>basic</ptype>	
 		
 	% Area1
 	<area>
 		<desc>You're lost in the Heart of the Dungeon.  Don't get eaten.</desc>
 		<feats>0,0</feats>
 	</area>
-      
     <item>
     		<use>
 			<name>Silver Bell</name>

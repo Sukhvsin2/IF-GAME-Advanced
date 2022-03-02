@@ -124,11 +124,13 @@ class Game{
 			player1->setCurrent(map.getStart());
 			player1->resetPlayerStats();
 			
-			cout<<"\n\nMake reset Function working.\n\n";
+			map.linkLinks();
+			cout<<"Game is resetting!"<<endl;
 			//remove item from player list
 			player1->items.destroyList();
 			//remove item from each area in turn
 			map.resetItems();
+			cout<<"Reset Done!!"<<endl;
 		}
 };
 

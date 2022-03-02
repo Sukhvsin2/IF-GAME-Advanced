@@ -50,40 +50,41 @@ class HPSPPlayer : public Player{
         else{
         bool found = false;
         while(temp != NULL && !found){
-        if(n == temp->info->getName()){
-        found = true;
-        if(temp->info->getType()!="consume"){
-                                cout<<"That proves impossible"<<endl;
-                                return;
-                            }
-        }
-        else{
-        temp = temp->link;
-        }
+            if(n == temp->info->getName()){
+            found = true;
+                if(temp->info->getType()!="consume"){
+                    cout<<"That proves impossible"<<endl;
+                    return;
+                }
+            }
+            else{
+                temp = temp->link;
+            }
         }
         if(found){
+            cout<<mapptr->reverseLookUp(currentLocation)<<" - "<<temp->info->getActiveArea()<<endl;
             if(mapptr->reverseLookUp(currentLocation) == temp->info->getActiveArea()||temp->info->getActiveArea() == 0){
                 cout<<temp->info->getActiveMessage()<<endl;
                 int i=0;
-                while(temp->info->getConsequences(effect, i)){
-                    switch(effect->effectID){
+                vector<Effect*> vec = temp->info->getItemConsumeEffects();
+                for(int i=0;i<vec.size();i++){
+                    switch(vec[0]->effectID){
                         case 0:
-                            HP-=effect->effectAmt;
+                            HP-=vec[i]->effectAmt;
                             break;
                         case 1:
-                            HP+=effect->effectAmt;
+                            HP+=vec[i]->effectAmt;
                             break;
                         case 2:
-                            SP-=effect->effectAmt;
+                            SP-=vec[i]->effectAmt;
                             break;
                         case 3:
-                            SP+=effect->effectAmt;
+                            SP+=vec[i]->effectAmt;
                             break;
                         default:
                             cout<<"Default error, effectID not recognized."<<endl;
                             break;
                     }
-                    i++;
                 }
             }else{
                 cout<<"You cannot consume the "<<temp->info->getName()<<" here."<<endl;
@@ -107,29 +108,32 @@ class HPSPPlayer : public Player{
         string item;
         getline(cin, item);
         nodeType<Item*>* tempItem = items.getFirst();
-        // cout<<"Item [0] - "<<tempItem<<"\n\n\n";
+        // cout<<"Item [0] - "<<tempItem->info-()<<"\n\n\n";
         if(tempItem == nullptr){
             cout<<"You have no items in your inventory."<<endl;
         }
         else{
             bool found = false;
-            while(tempItem != nullptr){
+            while(tempItem != nullptr && !found){
                 if(item == tempItem->info->getName()){
                     found = true;
-                    break;
-                }
-                tempItem = tempItem->link;
+                }else
+                    tempItem = tempItem->link;
             }
             if(found){
                 if(tempItem->info->getType()!="use"){
-                        cout << "/n/n***TEMP ITEM TYPE: " << tempItem->info->getType() << "***\n\n";
                         cout<<"There's no way to use this item."<<endl;
                         return;
                     }
                 if(mapptr->reverseLookUp(currentLocation) == tempItem->info->getActiveArea() || tempItem->info->getActiveArea() == 0){
                     // show message
                     cout<<tempItem->info->getActiveMessage()<<endl;
-                    //mapptr->newLinks(tempItem);
+                    
+                    vector<Rule*> vec = tempItem->info->getItemUseRules();
+                    cout<<"Size of vec: "<<vec.size()<<endl;
+                    for(int i=0;i<vec.size();i++){
+                        mapptr->makeNewLinks(vec[i]->beginRm, vec[i]->destRm, vec[i]->direction);
+                    }
                 }else{
                     cout<<"You cannot use the "<<tempItem->info->getName()<<" here."<<endl;
                 }

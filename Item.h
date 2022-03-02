@@ -75,20 +75,19 @@ class Item{
 			cout<<"DEBUG WARNING: Objects of the Item (basic items) class don't have associated effects."<<endl;
 		}
 		bool getT3C(Rule* r, int counter){
-			if(rulesVec.max_size() != counter){
-				r = rulesVec[counter];
+			if(rulesVec.capacity() > counter){
+				r = rulesVec.at(counter);
 				return true;
 			}
+			cout<<"End";
 			return false;
 		}
-		bool getConsequences(Effect* r, int counter){
-			if(effectsVec.max_size() != counter){
-				r = effectsVec[counter];
-				return true;
-			}
-			return false;
+		bool getConsequences(int effect, int amount){
+			
 		}
-
+		void setType(string type){
+			this->type = type;
+		}
         virtual vector<Effect*> getItemConsumeEffects(){
 			//shouldn't ever call this method directly
             vector<Effect*> blank;

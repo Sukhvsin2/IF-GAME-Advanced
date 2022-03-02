@@ -117,17 +117,20 @@ class Map{
 
 		void makeNewLinks(int rm, int ds, char key){
 			if(key == 'u') areasVec[rm-1]->u = areasVec[ds-1];
-			if(key == 'l') areasVec[rm-1]->l = areasVec[ds-1];
-			if(key == 'r') areasVec[rm-1]->r = areasVec[ds-1];
-			if(key == 'd') areasVec[rm-1]->d = areasVec[ds-1];
+			else if(key == 'l') areasVec[rm-1]->l = areasVec[ds-1];
+			else if(key == 'r') areasVec[rm-1]->r = areasVec[ds-1];
+			else if(key == 'd') areasVec[rm-1]->d = areasVec[ds-1];
+			else cout<<"Wrong Key in the .IFD"<<endl;
 		}
 		void newLinks(nodeType<Item*>* hold){
 			Rule* tempR;
 			int counter = 0;
 			while(hold->info->getT3C(tempR, counter)){
+				cout<<"Eneter if";
 				makeNewLinks(tempR->beginRm, tempR->destRm, tempR->direction);
 				counter++;
 			}
+			cout<<"Passed it"<<endl;
 		}
 		void linkLinks(){
 			for(int i=0; i<linkVec.size(); i++){

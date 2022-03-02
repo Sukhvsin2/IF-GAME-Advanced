@@ -95,10 +95,10 @@ MapV2(){
 
 void createPlayer(){
 	cout<<"Creating "<<nextToken<<" Player ... READY!"<<endl;
-		if(nextToken == "basic") tempPlayer = new Basic();
-		else tempPlayer = new HPSPPlayer();
-		parser.eatToken();
-		nextToken = parser.getNext();
+	if(nextToken == "basic") tempPlayer = new Basic();
+	else tempPlayer = new HPSPPlayer();
+	parser.eatToken();
+	nextToken = parser.getNext();
 }
 
 Player* checkPlayer(){
@@ -117,6 +117,7 @@ void makeItem(){
 			// cout<<"Make item: "<<nextToken<<endl;
 			if(nextToken == "<use>"){
 				tempItemPtr = new UseItem();
+				tempItemPtr->setType("use");
 				parser.eatToken();
 				nextToken = parser.getNext();
 				while(nextToken != "</use>"){
@@ -179,6 +180,8 @@ void makeItem(){
 					parser.eatToken();
 					nextToken = parser.getNext();
 				}//while !</item>
+				//add item to vector
+				itemVec.push_back(tempItemPtr);
 			}else if(nextToken == "<basic>"){
 				tempItemPtr = new Item();
 				parser.eatToken();
@@ -194,8 +197,6 @@ void makeItem(){
 				cout<<"Invalid Item Token Type!"<<endl;
 			}
 
-			//add item to vector
-			itemVec.push_back(tempItemPtr);
 			parser.eatToken();
 			nextToken = parser.getNext();
 
@@ -203,6 +204,7 @@ void makeItem(){
 
 void consumeHelper(Item *tempItemPtr){
 	while(nextToken != "</consume>"){
+		tempItemPtr->setType("consume");
 		if(nextToken == "<actmess>"){
 			// actmess code
 			parser.eatToken();
@@ -212,7 +214,11 @@ void consumeHelper(Item *tempItemPtr){
 		else if(nextToken == "<actar>"){
 			parser.eatToken();
 			nextToken = parser.getNext();
-			tempItemPtr->setActiveArea(nextToken[0]);
+
+			string xstr;
+			istringstream ss(nextToken);
+			getline(ss, xstr, ',');
+			tempItemPtr->setActiveArea(atoi(xstr.c_str()));
 			// cout<<"\n\n This is my Actar: "<<nextToken[0]<<"\n\n";
 			// some code
 		}
