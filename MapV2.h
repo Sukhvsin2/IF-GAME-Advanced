@@ -113,6 +113,7 @@ void makeItem(){
 			char direction;
 			int destRm;
 			Item* tempItemPtr;
+			
 			// cout<<"Make item: "<<nextToken<<endl;
 			if(nextToken == "<use>"){
 				tempItemPtr = new UseItem();
@@ -206,11 +207,14 @@ void consumeHelper(Item *tempItemPtr){
 			// actmess code
 			parser.eatToken();
 			nextToken = parser.getNext();
+			tempItemPtr->setActiveMessage(nextToken);
 		}
 		else if(nextToken == "<actar>"){
-
 			parser.eatToken();
 			nextToken = parser.getNext();
+			tempItemPtr->setActiveArea(nextToken[0]);
+			// cout<<"\n\n This is my Actar: "<<nextToken[0]<<"\n\n";
+			// some code
 		}
 		else if(nextToken == "<desc>"){
 			parser.eatToken();
@@ -246,10 +250,10 @@ void consumeHelper(Item *tempItemPtr){
 			tempItemPtr->addEffect(tempEffect);
 		}
 		else if(nextToken == "</desc>" || nextToken == "</actmess>" || nextToken == "</actar>" || nextToken == "</star>" || nextToken == "</name>" || nextToken == "</effect>"){
-		//do nothing
+			//do nothing
 		}
 		else{
-			cout<<"Parse Error Location 2"<<endl;
+			cout<<"Parse Error Location consume area"<<endl;
 			ifderr = true;
 			break;
 		}
@@ -282,7 +286,7 @@ void basicHelper(Item *tempItemPtr){
 		//do nothing
 		}
 		else{
-			cout<<"Parse Error Location 3"<<endl;
+			cout<<"Parse Error Location basic area"<<endl;
 			ifderr = true;
 			break;
 		}
@@ -298,6 +302,7 @@ void InsertItems(){
 		areasVec[itemVec[i]->getSR() - 1]->info.items.insertLast(itemVec[i]);
 	}
 }
+
 
 
 void resetItems(){

@@ -4,8 +4,6 @@
 using namespace std;
 
 class ConsumeItem : public Item{
-    vector<Effect*> effectsVec;
-
     public:
         void addEffect(Effect *effect){
             effectsVec.push_back(effect);

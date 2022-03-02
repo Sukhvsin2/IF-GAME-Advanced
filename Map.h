@@ -115,7 +115,20 @@ class Map{
 			}//while !</links>
 		}//makeLinks()
 
-
+		void makeNewLinks(int rm, int ds, char key){
+			if(key == 'u') areasVec[rm-1]->u = areasVec[ds-1];
+			if(key == 'l') areasVec[rm-1]->l = areasVec[ds-1];
+			if(key == 'r') areasVec[rm-1]->r = areasVec[ds-1];
+			if(key == 'd') areasVec[rm-1]->d = areasVec[ds-1];
+		}
+		void newLinks(nodeType<Item*>* hold){
+			Rule* tempR;
+			int counter = 0;
+			while(hold->info->getT3C(tempR, counter)){
+				makeNewLinks(tempR->beginRm, tempR->destRm, tempR->direction);
+				counter++;
+			}
+		}
 		void linkLinks(){
 			for(int i=0; i<linkVec.size(); i++){
 					areasVec[i]->u = areasVec[(linkVec[i]->getDigit(0))-1];

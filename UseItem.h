@@ -6,7 +6,7 @@ using namespace std;
 
 class UseItem : public Item{
     protected:
-        vector<Rule*> rulesVec;
+    // no code
     public:
         void addRule(Rule* tempRule){
             rulesVec.push_back(tempRule);
@@ -26,4 +26,5 @@ class UseItem : public Item{
         void setActiveMessage(string s){
             activeMessage = s;
 		}
+        
 };

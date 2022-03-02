@@ -1,4 +1,5 @@
 #include "MapV2.h"
+#include<stdio.h>
 
 
 #include "Player.h"
@@ -88,13 +89,23 @@ class Game{
 				else if(userInput == "stats"){
 					player1->reportStats();
 				}
+				else if(userInput == "use"){
+					cout<<"Make Use Command Work"<<endl;
+					// MapV2 *temp = &map;
+					player1->use(&map);
+				}
+				else if(userInput == "consume"){
+					player1->consume(&map);
+				}
 				else if(userInput == "help"){
 					cout<<"You may type: "<<endl;
 					cout<<"\t u, d, l, or r: to move up, down, left or right on the map,"<<endl;
 					cout<<"\t search: to search for items in current area,"<<endl;	
 					cout<<"\t take: to attempt to take an item,"<<endl;
 					cout<<"\t leave: to attempt to leave an item,"<<endl;
-					cout<<"\t examine: to examine an item in your inventory,"<<endl;				
+					cout<<"\t examine: to examine an item in your inventory,"<<endl;
+					cout<<"\t use: to use an item in your inventory,"<<endl;
+					cout<<"\t consume: to consume an item in your inventory,"<<endl;
 					cout<<"\t reset: to reset the game,"<<endl;
 					cout<<"\t exit: to exit the game."<<endl;
 					cout<<endl;
@@ -111,6 +122,9 @@ class Game{
 		}
 		void resetGame(){
 			player1->setCurrent(map.getStart());
+			player1->resetPlayerStats();
+			
+			cout<<"\n\nMake reset Function working.\n\n";
 			//remove item from player list
 			player1->items.destroyList();
 			//remove item from each area in turn

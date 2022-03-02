@@ -36,11 +36,109 @@ class HPSPPlayer : public Player{
         cout << "\tHit Points: " << HP << endl;
         cout << "\tSanity Points: " << SP << endl;
     }
-	
-	virtual void consume(Map* mapptr){
 
-    };
-	virtual void use(Map* mapptr){
+    virtual void consume(Map* mapptr){
+        cout<<"What would you like to consume?"<<endl;
+        string n;
+        getline(cin, n);
+        nodeType<Item*>* temp = NULL;
+        Effect* effect;
+        temp = items.getFirst();
+        if(temp == NULL){
+        cout<<"You have no items in your inventory."<<endl;
+        }
+        else{
+        bool found = false;
+        while(temp != NULL && !found){
+        if(n == temp->info->getName()){
+        found = true;
+        if(temp->info->getType()!="consume"){
+                                cout<<"That proves impossible"<<endl;
+                                return;
+                            }
+        }
+        else{
+        temp = temp->link;
+        }
+        }
+        if(found){
+            if(mapptr->reverseLookUp(currentLocation) == temp->info->getActiveArea()||temp->info->getActiveArea() == 0){
+                cout<<temp->info->getActiveMessage()<<endl;
+                int i=0;
+                while(temp->info->getConsequences(effect, i)){
+                    switch(effect->effectID){
+                        case 0:
+                            HP-=effect->effectAmt;
+                            break;
+                        case 1:
+                            HP+=effect->effectAmt;
+                            break;
+                        case 2:
+                            SP-=effect->effectAmt;
+                            break;
+                        case 3:
+                            SP+=effect->effectAmt;
+                            break;
+                        default:
+                            cout<<"Default error, effectID not recognized."<<endl;
+                            break;
+                    }
+                    i++;
+                }
+            }else{
+                cout<<"You cannot consume the "<<temp->info->getName()<<" here."<<endl;
+            }
+        }
+        else{
+        cout<<"No item by that name in your inventory."<<endl;
+        }
+        }
+    }
 
-    };
+
+	// virtual void use(Map* mapptr){
+    //     cout<<"Use what item?"<<endl;
+    //     string item;
+    //     getline(cin, item);
+        
+    // };
+    virtual void use(Map* mapptr){
+        cout<<"What item to use?"<<endl;
+        string item;
+        getline(cin, item);
+        nodeType<Item*>* tempItem = items.getFirst();
+        // cout<<"Item [0] - "<<tempItem<<"\n\n\n";
+        if(tempItem == nullptr){
+            cout<<"You have no items in your inventory."<<endl;
+        }
+        else{
+            bool found = false;
+            while(tempItem != nullptr){
+                if(item == tempItem->info->getName()){
+                    found = true;
+                    break;
+                }
+                tempItem = tempItem->link;
+            }
+            if(found){
+                if(tempItem->info->getType()!="use"){
+                        cout << "/n/n***TEMP ITEM TYPE: " << tempItem->info->getType() << "***\n\n";
+                        cout<<"There's no way to use this item."<<endl;
+                        return;
+                    }
+                if(mapptr->reverseLookUp(currentLocation) == tempItem->info->getActiveArea() || tempItem->info->getActiveArea() == 0){
+                    // show message
+                    cout<<tempItem->info->getActiveMessage()<<endl;
+                    //mapptr->newLinks(tempItem);
+                }else{
+                    cout<<"You cannot use the "<<tempItem->info->getName()<<" here."<<endl;
+                }
+            }
+            else{
+            cout<<"No item by that name in your inventory."<<endl;
+            }
+        }
+    }
 };
+
+

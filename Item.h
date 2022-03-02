@@ -74,6 +74,21 @@ class Item{
 		virtual void addEffect(Effect* temp){
 			cout<<"DEBUG WARNING: Objects of the Item (basic items) class don't have associated effects."<<endl;
 		}
+		bool getT3C(Rule* r, int counter){
+			if(rulesVec.max_size() != counter){
+				r = rulesVec[counter];
+				return true;
+			}
+			return false;
+		}
+		bool getConsequences(Effect* r, int counter){
+			if(effectsVec.max_size() != counter){
+				r = effectsVec[counter];
+				return true;
+			}
+			return false;
+		}
+
         virtual vector<Effect*> getItemConsumeEffects(){
 			//shouldn't ever call this method directly
             vector<Effect*> blank;
@@ -84,6 +99,9 @@ class Item{
 	friend ostream& operator<<(ostream&, Item&);
 
     protected:
+		vector<Effect*> effectsVec;
+
+        vector<Rule*> rulesVec;
         string name;
     	string description;
         int startRoom;
