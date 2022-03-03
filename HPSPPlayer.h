@@ -62,7 +62,7 @@ class HPSPPlayer : public Player{
             }
         }
         if(found){
-            cout<<mapptr->reverseLookUp(currentLocation)<<" - "<<temp->info->getActiveArea()<<endl;
+            // cout<<mapptr->reverseLookUp(currentLocation)<<" - "<<temp->info->getActiveArea()<<endl;
             if(mapptr->reverseLookUp(currentLocation) == temp->info->getActiveArea()||temp->info->getActiveArea() == 0){
                 cout<<temp->info->getActiveMessage()<<endl;
                 int i=0;
@@ -130,9 +130,9 @@ class HPSPPlayer : public Player{
                     cout<<tempItem->info->getActiveMessage()<<endl;
                     
                     vector<Rule*> vec = tempItem->info->getItemUseRules();
-                    cout<<"Size of vec: "<<vec.size()<<endl;
+                    // cout<<"Size of vec: "<<vec.size()<<endl;
                     for(int i=0;i<vec.size();i++){
-                        mapptr->makeNewLinks(vec[i]->beginRm, vec[i]->destRm, vec[i]->direction);
+                        mapptr->setNewLinks(vec[i]->beginRm, vec[i]->destRm, vec[i]->direction);
                     }
                 }else{
                     cout<<"You cannot use the "<<tempItem->info->getName()<<" here."<<endl;

@@ -74,17 +74,6 @@ class Item{
 		virtual void addEffect(Effect* temp){
 			cout<<"DEBUG WARNING: Objects of the Item (basic items) class don't have associated effects."<<endl;
 		}
-		bool getT3C(Rule* r, int counter){
-			if(rulesVec.capacity() > counter){
-				r = rulesVec.at(counter);
-				return true;
-			}
-			cout<<"End";
-			return false;
-		}
-		bool getConsequences(int effect, int amount){
-			
-		}
 		void setType(string type){
 			this->type = type;
 		}

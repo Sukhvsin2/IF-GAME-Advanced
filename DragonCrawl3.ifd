@@ -12,7 +12,7 @@
 
 
 <game>
-	<ptype>basic</ptype>	
+	<ptype>hsps</ptype>	
 		
 	% Area1
 	<area>
@@ -48,7 +48,7 @@
 
 % Area2
 	<area>
-		<desc>Castle Tower.  Put some other descriptive text here.
+		<desc>Castle Tower.  Dang you hurting your life!!!
 		<feats>0,0</feats>
 	</area>
 

@@ -90,7 +90,7 @@ class Game{
 					player1->reportStats();
 				}
 				else if(userInput == "use"){
-					cout<<"Make Use Command Work"<<endl;
+					// cout<<"Make Use Command Work"<<endl;
 					// MapV2 *temp = &map;
 					player1->use(&map);
 				}
